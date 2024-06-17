@@ -17,7 +17,9 @@ public class Main {
    BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
    public void solution() throws IOException {
+	   //삭제예정
 	   pl("solution start");
+	   pl("피곤하다..");
 	   
 	   N = Integer.parseInt(br.readLine());
 	   arr = Arrays.stream(br.readLine().split("")).toArray(String[]::new);
