@@ -10,47 +10,46 @@ import java.util.*;
 public class Main {
 
    int N;
-   int sum;
+   int finalResult;
    String[] arr;
    
    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
    BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
    public void solution() throws IOException {
-	   //삭제예정
-	   pl("solution start");
-	   pl("피곤하다..");
-	   
 	   N = Integer.parseInt(br.readLine());
 	   arr = Arrays.stream(br.readLine().split("")).toArray(String[]::new);
 	   
-	   dfs(1, Integer.parseInt(arr[0]));
+	   finalResult = Integer.MIN_VALUE;
 	   
+	   dfs(0, Integer.parseInt(arr[0]));
 	   
+	   pl(finalResult);
    }
    
    
    
    public void dfs(int index, int receivedValue) {//최초에는 index 1과 넘김값 0을 받는다.
-	   //여기서 넘김 수는 
-	   //종료 조건 생성해 줘야함
+	   int result;
 	   
-	   ////괄호를 치는 경우
-	   //괄호안의 값 우선 계산
-	   int throwResult = cal(Integer.parseInt(arr[index - 1]), 
-		   		Integer.parseInt(arr[index + 1]), 
-		   		arr[index]);
+	   //종료 조건 설정
+	   if (index + 3 >= N) {
+		   if (index + 2 <= N) {
+			   result = cal(receivedValue, ip(arr[index + 2]), arr[index + 1]);
+			   finalResult = Integer.max(result, finalResult);
+		   } else {
+			   finalResult = Integer.max(receivedValue, finalResult);
+		   }
+		   return;
+	   }
 	   
-	   //넘김값과 괄호안 값을 이전연산 해줌
-	   throwResult = cal(receivedValue, throwResult, arr[index - 2]);  
-
-	   dfs(index + 4, throwResult);
+	   //index + 2 와 index + 4가 index + 3의 연산을 하는 경우
+	   dfs(index + 4, cal(receivedValue, 
+			   cal(ip(arr[index + 2]), ip(arr[index + 4]), arr[index + 3])
+			   , arr[index + 1] 
+			   ));
 	   
-	   ////괄호를 치지 않는 경우
-	   throwResult = cal(receivedValue, Integer.parseInt(arr[index - 1]), arr[index - 2]); 
-	   
-	   dfs(index + 2, throwResult);
-	   //종료에  대해서 고민해봐야됨.
+	   dfs(index + 2, cal(receivedValue, ip(arr[index + 2]), arr[index + 1]));
    }
    
    public int cal(int a, int b, String func) {
@@ -64,6 +63,10 @@ public class Main {
 		   default :
 			   return 0;
 	   }
+   }
+   
+   public static int ip(String s) {
+	   return Integer.parseInt(s);
    }
    
    public static void main(String[] args) throws IOException {
