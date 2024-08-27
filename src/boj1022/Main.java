@@ -5,26 +5,55 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
 
 	int r1, c1, r2, c2;
+	int[][] resultArr;
 
 	final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	final BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 	
 	void solution() throws IOException {
 		
-		pl("hello world");
-		
 		StringTokenizer st = new StringTokenizer(br.readLine());
-		
 		r1 = Integer.parseInt(st.nextToken());
 		c1 = Integer.parseInt(st.nextToken());
 		r2 = Integer.parseInt(st.nextToken());
 		c2 = Integer.parseInt(st.nextToken());
 		
+		resultArr = new int[r2 - r1 + 1][c2 - c1 + 1];
+		
+		//길이는 어떻게 확인할까..
+		int a = 0; int b = 0;
+		int maxNumber = Integer.MIN_VALUE;
+		for (int x = r1; x <= r2; x++) {
+			b = 0;
+			for (int y = c1; y <= c2; y++) {
+				int tmpN = findNumber(x, y);
+				maxNumber = Math.max(tmpN, maxNumber);
+				resultArr[a][b] = tmpN;
+				b++;
+			}
+			a++;
+		}
+		
+		pl(findNumber(0, 0));
+		
+		int figure = String.valueOf(maxNumber).length() + 1;
+		for (int i = 0; i < resultArr.length; i++) {
+			for (int j = 0; j < resultArr[i].length; j++) {
+				if (j == 0) {
+					System.out.print(String.format("%"+(figure - 1)+"d", resultArr[i][j]));
+				} else {
+					System.out.print(String.format("%"+(figure)+"d", resultArr[i][j]));
+				}
+			}
+			System.out.println();
+		}
+//		가장 큰숫자의 자릿수를 어떻게?
 	}
 	
 //	이 그림판 자체가 여러겹의 테두리로 겹겹이 되어 있는 구조 이다.
@@ -39,20 +68,22 @@ public class Main {
 //	  1,-1 1,0   1,1
 //	A구역 x가 y보다 크다. 같은 경우에는 둘다 양수이다.
 //
-//	B구역 x가 y보다 작사. 같은 경우에는 둘다 음수이다.
+//	B구역 x가 y보다 작다. 같은 경우에는 둘다 음수이다.
 //	1 -> 9 -> 25
-//	- 기준 점은 (2n + 1)^2
+//	- 기준 점은 (2n + 1)^2 여기서 n은 두수 중 절대값이 큰 수
 //	- x >= y 경우 /// 절대값이 큰수가 
 //	- x < y 경우 
-
-
-
 	
-//	int findNumber(int x, int y) { 
-//		
-//		
-//		
-//	}
+	int findNumber(int x, int y) { 
+		int rawN = Math.max(Math.abs(x), Math.abs(y));
+		int standardN = (int)Math.pow((2 * rawN + 1), 2);
+		
+		if (x >= y) {
+			return standardN - (rawN - x) - (rawN - y);
+		} else {
+			return standardN - (4 * rawN) - (x - rawN) - (y - rawN);
+		}
+	}
 	
 	public static void main(String[] args) throws IOException{ 
 		new Main().solution();
