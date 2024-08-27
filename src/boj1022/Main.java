@@ -1,12 +1,7 @@
 package boj1022;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.util.Arrays;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
 public class Main {
 
@@ -39,8 +34,6 @@ public class Main {
 			}
 			a++;
 		}
-		
-		pl(findNumber(0, 0));
 		
 		int figure = String.valueOf(maxNumber).length() + 1;
 		for (int i = 0; i < resultArr.length; i++) {
@@ -81,7 +74,7 @@ public class Main {
 		if (x >= y) {
 			return standardN - (rawN - x) - (rawN - y);
 		} else {
-			return standardN - (4 * rawN) - (x - rawN) - (y - rawN);
+			return (standardN - (4 * rawN)) - (x + rawN) - (y + rawN);
 		}
 	}
 	
