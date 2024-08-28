@@ -1,4 +1,4 @@
-package boj1022;
+package boj1027;
 
 import java.io.*;
 import java.util.*;
@@ -17,7 +17,7 @@ public class Main {
 		buildings = Arrays.stream(br.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
 		
 		maxBuildings = Integer.MIN_VALUE;
-		for (int i : buildings) {
+		for (int i = 0; i < N; i++) {
 			maxBuildings = Math.max(maxBuildings, findBuildings(i));
 		}
 		
@@ -25,9 +25,37 @@ public class Main {
 	}
 	
 	int findBuildings(int index) {
-		double maxIncline;
+		double maxInclineLeft = -180.0d;
+		double maxInclineRight = -180.0d;
+		int count = 0;
 		
-		return 0;
+		for (int i = index - 1; i >= 0; i--) {
+			double incline = findIncline(index, i);
+			pl(String.format("index : %d, i : %d, incline : %f, maxInclineLeft : %f", index, i, incline, maxInclineLeft));
+			if (incline > maxInclineLeft) {
+				count++;
+				pl("count :" + count);
+				maxInclineLeft = incline;
+			}
+		}
+		
+		for (int i = index + 1; i < N; i++) {
+			double incline = findIncline(index, i);
+			pl(String.format("index : %d, i : %d, incline : %f, maxInclineRight : %f", index, i, incline, maxInclineRight));
+			if (incline > maxInclineRight) {
+				count++;
+				pl("count :" + count);
+				maxInclineRight = incline;
+			}
+		}
+		
+		pl(String.format("index : %d, count : %d", index, count));
+		
+		return count;
+	}
+	
+	double findIncline(int index, int i) {
+		return (double)(buildings[i] - buildings[index]) / (double)Math.abs(i - index);
 	}
 	
 	public static void main(String[] args) throws IOException{ 
