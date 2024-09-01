@@ -25,31 +25,31 @@ public class Main {
 	}
 	
 	int findBuildings(int index) {
-		double maxInclineLeft = -180.0d;
-		double maxInclineRight = -180.0d;
+		double maxInclineLeft = (double)Integer.MIN_VALUE;
+		double maxInclineRight = (double)Integer.MIN_VALUE;
 		int count = 0;
 		
 		for (int i = index - 1; i >= 0; i--) {
 			double incline = findIncline(index, i);
-			pl(String.format("index : %d, i : %d, incline : %f, maxInclineLeft : %f", index, i, incline, maxInclineLeft));
+//			pl(String.format("index : %d, i : %d, incline : %f, maxInclineLeft : %f", index, i, incline, maxInclineLeft));
 			if (incline > maxInclineLeft) {
 				count++;
-				pl("count :" + count);
+//				pl("count :" + count);
 				maxInclineLeft = incline;
 			}
 		}
 		
 		for (int i = index + 1; i < N; i++) {
 			double incline = findIncline(index, i);
-			pl(String.format("index : %d, i : %d, incline : %f, maxInclineRight : %f", index, i, incline, maxInclineRight));
+//			pl(String.format("index : %d, i : %d, incline : %f, maxInclineRight : %f", index, i, incline, maxInclineRight));
 			if (incline > maxInclineRight) {
 				count++;
-				pl("count :" + count);
+//				pl("count :" + count);
 				maxInclineRight = incline;
 			}
 		}
 		
-		pl(String.format("index : %d, count : %d", index, count));
+//		pl(String.format("index : %d, count : %d", index, count));
 		
 		return count;
 	}
