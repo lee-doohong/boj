@@ -22,35 +22,36 @@ public class Main {
 		pl(('A' - '7'));
 		pl(('Z' - '7'));
 		
-		pl(thirtysixToTen("HELLO".toCharArray()));
+		tenToThirtySix(thirtysixToTen("HELLO".toCharArray()));
 	}
 	
 	BigInteger thirtysixToTen(char[] input) {
+		BigInteger returnN = new BigInteger("0");
 		BigInteger tmp = null;
 		
 		for (int i = 0; i < input.length; i++) {
 			if (input[i] < ':') {
 				tmp = new BigInteger(String.valueOf(input[i]));
 			} else {
-				tmp = new BigInteger(String.valueOf(input[i - '7']));
+				tmp = new BigInteger(String.valueOf(input[i] - '7'));
 			}
 			
-			for (int j = 0; j < i; j++) {
-				tmp = new BigInteger(tmp.multiply(TS).toString());
-			}
+			pl(String.format("[thirysixToTen] returnN : %s", returnN.toString()));
+			
+			BigInteger tmp2 = returnN.multiply(TS).add(tmp);
+			returnN = tmp2;
 		}
 
-		return tmp;
+		pl(String.format("[thirysixToTen] return : %s", returnN.toString()));
+		return returnN;
 	}
 	
-	void thirtysixToTen(BigInteger input) {//걍 출력해주는것
-		char[] result = new char[50];
+	void tenToThirtySix(BigInteger input) {//걍 출력해주는것
 		StringBuilder sb = new StringBuilder();
 		
-		
-		int index = 0;
 		while(input.compareTo(new BigInteger("0")) != 0) {
 			int tmpN = Integer.parseInt(input.remainder(TS).toString());
+			pl(String.format("[tenToThirtySix] tmpN : %d", tmpN));
 			if (tmpN < 10) {
 				sb.append((char)(tmpN + '0'));
 			} else {
@@ -58,6 +59,7 @@ public class Main {
 			}
 			input = input.divide(TS);
 		}
+		pl(sb.toString());
 		pl(new StringBuffer(sb.toString()).reverse().toString());
 	}
 	
