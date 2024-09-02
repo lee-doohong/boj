@@ -6,23 +6,67 @@ import java.math.BigInteger;
 
 public class Main {
 
-	int N;
+	int N, K;
 
 	final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	final BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 	
 	final BigInteger TS = new BigInteger("36");
+	
+	List<thirtySix> listTS = new ArrayList<>();
 
+	BigInteger finalResult = new BigInteger("0");
+	
+	
 	//A는 36진수 기준 10
 	//Z는 36진수 기준 35
+	class thirtySix implements Comparable<thirtySix>{
+		int indexN;
+		BigInteger toZ = new BigInteger("0");
+		
+		thirtySix(int indexN) {
+			this.indexN = indexN;
+		}
+
+		thirtySix changeToZ(BigInteger input) {
+			this.toZ = input;
+			return this;
+		}
+		
+		public String toString() {
+			return String.format("index : %d, toZ : %s", indexN, toZ.toString());
+		}
+
+		@Override
+		public int compareTo(thirtySix o) {
+			// TODO Auto-generated method stub
+			return o.toZ.compareTo(this.toZ);//큰수를 작은수랑 비교하면 1을 리턴한다.//즉 toZ 기준으로 내림차순 배열
+		}
+	}
 	
 	void solution() throws IOException {
-//		N = Integer.parseInt(br.readLine());
+		//일단 리스트 초기화
+		for (int i = 0; i < 36; i++) {//0부터 35까지 객체 저장
+			listTS.add(new thirtySix(i));
+		}
 		
-		pl(('A' - '7'));
-		pl(('Z' - '7'));
+		N = Integer.parseInt(br.readLine());
 		
-		tenToThirtySix(thirtysixToTen("HELLO".toCharArray()));
+		for (int i = 0; i < N; i++) {
+			thirtysixToTen(br.readLine().toCharArray());
+		}
+		
+		Collections.sort(listTS);
+		
+		K = Integer.parseInt(br.readLine());
+
+		for (int i = 0; i < K; i++) {
+			finalResult = finalResult.add(listTS.get(i).toZ);
+		}
+		
+		pl("listTs : " + listTS);
+		
+		tenToThirtySix(finalResult);
 	}
 	
 	BigInteger thirtysixToTen(char[] input) {
@@ -36,13 +80,23 @@ public class Main {
 				tmp = new BigInteger(String.valueOf(input[i] - '7'));
 			}
 			
-			pl(String.format("[thirysixToTen] returnN : %s", returnN.toString()));
+			BigInteger toPutListTS = new BigInteger("35").subtract(tmp);
+			for (int j = 0; j < i; j++) {
+				toPutListTS = toPutListTS.multiply(TS);
+			}
+			
+			//각 숫자가 Z가 되면 얼마나 커지는지를 listTS에 저장
+			listTS.set(Integer.parseInt(tmp.toString()), 
+					listTS.get(Integer.parseInt(tmp.toString())).changeToZ(listTS.get(Integer.parseInt(tmp.toString())).toZ.add(toPutListTS)));
 			
 			BigInteger tmp2 = returnN.multiply(TS).add(tmp);
 			returnN = tmp2;
 		}
 
 		pl(String.format("[thirysixToTen] return : %s", returnN.toString()));
+
+		finalResult = finalResult.add(returnN);
+		
 		return returnN;
 	}
 	
