@@ -81,19 +81,22 @@ public class Main {
 			}
 			
 			BigInteger toPutListTS = new BigInteger("35").subtract(tmp);
-			for (int j = 0; j < i; j++) {
+			for (int j = i; j < input.length - 1; j++) {
 				toPutListTS = toPutListTS.multiply(TS);
 			}
 			
+//			pl(String.format("tmp : %d, toPutListTS : %s", tmp, toPutListTS.toString()));
+			
 			//각 숫자가 Z가 되면 얼마나 커지는지를 listTS에 저장
 			listTS.set(Integer.parseInt(tmp.toString()), 
-					listTS.get(Integer.parseInt(tmp.toString())).changeToZ(listTS.get(Integer.parseInt(tmp.toString())).toZ.add(toPutListTS)));
+					listTS.get(Integer.parseInt(tmp.toString())).
+					changeToZ(listTS.get(Integer.parseInt(tmp.toString())).toZ.add(toPutListTS)));
 			
 			BigInteger tmp2 = returnN.multiply(TS).add(tmp);
 			returnN = tmp2;
 		}
 
-		pl(String.format("[thirysixToTen] return : %s", returnN.toString()));
+//		pl(String.format("[thirysixToTen] return : %s", returnN.toString()));
 
 		finalResult = finalResult.add(returnN);
 		
@@ -102,10 +105,13 @@ public class Main {
 	
 	void tenToThirtySix(BigInteger input) {//걍 출력해주는것
 		StringBuilder sb = new StringBuilder();
+		if (input.compareTo(new BigInteger("0")) == 0) {
+			sb.append(0);
+		}
 		
 		while(input.compareTo(new BigInteger("0")) != 0) {
 			int tmpN = Integer.parseInt(input.remainder(TS).toString());
-			pl(String.format("[tenToThirtySix] tmpN : %d", tmpN));
+//			pl(String.format("[tenToThirtySix] tmpN : %d", tmpN));
 			if (tmpN < 10) {
 				sb.append((char)(tmpN + '0'));
 			} else {
@@ -113,7 +119,7 @@ public class Main {
 			}
 			input = input.divide(TS);
 		}
-		pl(sb.toString());
+//		pl(sb.toString());
 		pl(new StringBuffer(sb.toString()).reverse().toString());
 	}
 	
