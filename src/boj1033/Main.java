@@ -14,6 +14,7 @@ public class Main {
 	int N;
 	long[] nArr;
 	List<Integer>[] adj;//어떤 것이 어디에 인접해 있는지 찾아주는것//처리해주고 난 다음에만 넣어준다.
+	boolean[] visited;
 	
 	final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	final BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
@@ -54,6 +55,7 @@ public class Main {
 		 adj[firstQ[1].intValue()].add(firstQ[0].intValue());
 
 		 plAdj();
+		 plNArr();
 		 
 		 while(!stack.isEmpty()) {//그냥 stack에 넣었을 뿐 특별한 의미는 없다 지금 상황에서는
 			 Long[] tmpQ = stack.pop();
@@ -72,6 +74,8 @@ public class Main {
 			 }
 			 
 			 smallSol(i, j, tmpQ[2].intValue(), tmpQ[3].intValue(), indexI, indexJ);
+			 plAdj();
+			 plNArr();
 		 }
 //		 pl(Arrays.toString(nArrs));
 //		 output		 
@@ -86,6 +90,7 @@ public class Main {
 	}
 	
 	void smallSol(long n, long m, int p, int q, int indexN, int indexM) {
+		pl(String.format("[smallSol] n : %d, m : %d, p : %d, q : %d , indexN : %d, indexM : %d", n, m, p, q, indexN, indexM));
 		if (n == 0L) n = 1L;
 		if (m == 0L) m = 1L;
 		
@@ -93,16 +98,51 @@ public class Main {
 		long tmpLCM = LCM(n, m);
 		
 		//n에 딸려있는 식구들에 대해서 곱을 해준다.
-		
+		long tmp1 = (tmpLCM / n) * p;
+		visited = new boolean[N];
+		dfs(indexN, tmp1);
+//		for (int i : adj[indexN]) {
+//			//곱해야 하는 수는 무엇인가
+//			dfs(i, tmp1);
+//			
+//			if (nArr[i] == 0L) nArr[i] = 1L;
+//			nArr[i] *= tmp1;
+//		}
 		//m에 딸려있는 식구들에 대해서 곱을 해준다.
+		long tmp2 = (tmpLCM / m) * q;
+		dfs(indexM, tmp2);
+//		for (int j : adj[indexM]) {
+//			if (nArr[j] == 0L) nArr[j] = 1L;
+//			nArr[j] *= tmp2;
+//		}
 		
+		adj[indexN].add(indexM);
+		adj[indexM].add(indexN);
 		//return new long[]{tmpLCM * p, tmpLCM * q};
 	}
 	
+	void dfs(int index, long tmpN) {
+		if (visited[index]) return;
+		
+		visited[index] = true;
+		if (nArr[index] == 0L) nArr[index] = 1L;
+		nArr[index] *= tmpN;
+		for (int i : adj[index]) {
+			dfs(i, tmpN);
+		}
+	}
+	
+	void plNArr() {
+		pl("plNArr");
+		pl(Arrays.toString(nArr));
+	}
+	
 	void plAdj() {
+		pl("plAdj");
 		for (List l : adj) {
 			System.out.print(l);
 		}
+		pl("");
 	}
 	
 	long[] trim(long n, long m) {
