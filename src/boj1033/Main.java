@@ -44,8 +44,16 @@ public class Main {
 		 }
 		 
 		 Long[] firstQ = stack.pop();//첫번째 것은 바꿔주고 시작한다.
+		 
+		 pl(String.format("firstQ : %s", Arrays.toString(firstQ)));
 		 nArr[firstQ[0].intValue()] = (long)firstQ[2];
 		 nArr[firstQ[1].intValue()] = (long)firstQ[3];
+		 
+		 adj[firstQ[0].intValue()].add(firstQ[1].intValue());
+		 adj[firstQ[1].intValue()].add(firstQ[0].intValue());
+		 
+		 
+		 plAdj();
 		 
 		 while(!stack.isEmpty()) {
 			 Long[] tmpQ = stack.pop();
@@ -55,7 +63,7 @@ public class Main {
 			 int indexI = tmpQ[0].intValue();
 			 int indexJ = tmpQ[1].intValue();
 			 
-//			 이미 해당 비율인 경우도 특별한 조치 없이 continue 돌린다;
+//			 이미 해당 비율인 경우에는 그냥 넘어간다 특별한 조치 없이 continue 돌린다;
 			 if (i != 0L && j != 0L) {//i도 0이 아니고 j도 0이 아닌경우..
 				 long[] trimmedIJ = trim(i, j);
 				 if (i == tmpQ[2] && j == tmpQ[3]) {
@@ -63,24 +71,12 @@ public class Main {
 				 }
 			 }
 			 
-			 //이제 하나는 0이고 하나는 0이 아니다
-			 boolean std = (i == 0 ? true : false);
-			 //std 첫번째 수가 0인 경우는 true, 두번째 수가 0인 경우는 false
-			 
-			 if(std) {
-				 //
-				 for (int k = 0; k < N; k++) {
-					 nArr[k] *= tmpQ[3];
-				 }
-
-				 nArr[indexI] = j * tmpQ[2];
-			 } else {
-				 for (int k = 0; k < N; k++) {
-					 nArr[k] *= tmpQ[2];
-				 }
-				 
-				 nArr[indexJ] = i * tmpQ[3];
-			 }
+//						 
+			while(!stack.isEmpty()) {
+				
+				
+				
+			}
 			 
 		 }
 //		 pl(Arrays.toString(nArrs));
@@ -95,12 +91,18 @@ public class Main {
 		 pl(sb.toString().trim());
 	}
 	
-	int[] smallSol(int n, int m, int p, int q) {
+	long[] smallSol(int n, int m, int p, int q) {
 		if (n == 0) n = 1;
 		if (m == 0) m = 1;
 		
-		int tmpLCM = LCM(n, m);
-		return new int[]{tmpLCM * p, tmpLCM * q};
+		long tmpLCM = LCM(n, m);
+		return new long[]{tmpLCM * p, tmpLCM * q};
+	}
+	
+	void plAdj() {
+		for (List l : adj) {
+			System.out.print(l);
+		}
 	}
 	
 	long[] trim(long n, long m) {
@@ -120,7 +122,7 @@ public class Main {
 		else return GCD(b, r);
 	}
 	
-	int LCM(int n, int m) {
+	long LCM(long n, long m) {
 		return (n * m) / GCD(n, m);
 	}
 	
