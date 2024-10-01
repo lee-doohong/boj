@@ -30,6 +30,7 @@ public class Main {
 		 adj = new ArrayList[N];
 		 for (int i = 0; i < N; i++) {
 			 adj[i] = new ArrayList();
+			 adj[i].add(i);
 		 }
 		 
 		 nArr = new long[N];
@@ -51,11 +52,10 @@ public class Main {
 		 
 		 adj[firstQ[0].intValue()].add(firstQ[1].intValue());
 		 adj[firstQ[1].intValue()].add(firstQ[0].intValue());
-		 
-		 
+
 		 plAdj();
 		 
-		 while(!stack.isEmpty()) {
+		 while(!stack.isEmpty()) {//그냥 stack에 넣었을 뿐 특별한 의미는 없다 지금 상황에서는
 			 Long[] tmpQ = stack.pop();
 			 //대상 index 수 두개를 i와 j로 지정해준디 ㅏ.
 			 long i = nArr[tmpQ[0].intValue()];
@@ -71,13 +71,7 @@ public class Main {
 				 }
 			 }
 			 
-//						 
-			while(!stack.isEmpty()) {
-				
-				
-				
-			}
-			 
+			 smallSol(i, j, tmpQ[2].intValue(), tmpQ[3].intValue(), indexI, indexJ);
 		 }
 //		 pl(Arrays.toString(nArrs));
 //		 output		 
@@ -91,12 +85,18 @@ public class Main {
 		 pl(sb.toString().trim());
 	}
 	
-	long[] smallSol(int n, int m, int p, int q) {
-		if (n == 0) n = 1;
-		if (m == 0) m = 1;
+	void smallSol(long n, long m, int p, int q, int indexN, int indexM) {
+		if (n == 0L) n = 1L;
+		if (m == 0L) m = 1L;
 		
+		//두 숫자의 최소공배수를 먼저 구해준다.
 		long tmpLCM = LCM(n, m);
-		return new long[]{tmpLCM * p, tmpLCM * q};
+		
+		//n에 딸려있는 식구들에 대해서 곱을 해준다.
+		
+		//m에 딸려있는 식구들에 대해서 곱을 해준다.
+		
+		//return new long[]{tmpLCM * p, tmpLCM * q};
 	}
 	
 	void plAdj() {
