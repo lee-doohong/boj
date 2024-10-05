@@ -28,6 +28,11 @@ public class Main {
 	void solution() throws IOException {
 		 N = Integer.parseInt(br.readLine());
 		 
+		 if (N == 1) {
+			 pl(1);
+			 return;
+		 }
+		 
 		 adj = new ArrayList[N];
 		 for (int i = 0; i < N; i++) {
 			 adj[i] = new ArrayList();
@@ -47,16 +52,16 @@ public class Main {
 		 
 		 Long[] firstQ = stack.pop();//첫번째 것은 바꿔주고 시작한다.
 		 
-		 pl(String.format("firstQ : %s", Arrays.toString(firstQ)));
+//		 pl(String.format("firstQ : %s", Arrays.toString(firstQ)));
 		 nArr[firstQ[0].intValue()] = (long)firstQ[2];
 		 nArr[firstQ[1].intValue()] = (long)firstQ[3];
 		 
 		 adj[firstQ[0].intValue()].add(firstQ[1].intValue());
 		 adj[firstQ[1].intValue()].add(firstQ[0].intValue());
 
-		 plAdj();
-		 plNArr();
-		 
+//		 plAdj();
+//		 plNArr();
+//		 
 		 while(!stack.isEmpty()) {//그냥 stack에 넣었을 뿐 특별한 의미는 없다 지금 상황에서는
 			 Long[] tmpQ = stack.pop();
 			 //대상 index 수 두개를 i와 j로 지정해준디 ㅏ.
@@ -74,12 +79,21 @@ public class Main {
 			 }
 			 
 			 smallSol(i, j, tmpQ[2].intValue(), tmpQ[3].intValue(), indexI, indexJ);
-			 plAdj();
-			 plNArr();
+//			 plAdj();
+//			 plNArr();
 		 }
 //		 pl(Arrays.toString(nArrs));
 //		 output		 
 		 StringBuilder sb = new StringBuilder();
+		 
+		 long GCDtmp = nArr[0];
+		 for (int i = 1; i < N; i++) {
+			 GCDtmp = GCD(GCDtmp, nArr[i]);
+		 }
+		 
+		 for (int i = 0; i < N; i++) {
+			 nArr[i] /= GCDtmp;
+		 }
 		 
 		 for (long n : nArr) {
 			 sb.append(n);
@@ -90,7 +104,7 @@ public class Main {
 	}
 	
 	void smallSol(long n, long m, int p, int q, int indexN, int indexM) {
-		pl(String.format("[smallSol] n : %d, m : %d, p : %d, q : %d , indexN : %d, indexM : %d", n, m, p, q, indexN, indexM));
+//		pl(String.format("[smallSol] n : %d, m : %d, p : %d, q : %d , indexN : %d, indexM : %d", n, m, p, q, indexN, indexM));
 		if (n == 0L) n = 1L;
 		if (m == 0L) m = 1L;
 		
